@@ -1,6 +1,14 @@
 var _ = require('lodash')
 var needle = require('needle')
 
+var _array = function(str) {
+  if (_.isArray(str)) {
+    return str
+  } else {
+    return [str]
+  }
+}
+
 var _encodeTagUrls = function (urls, lang) {
   var data = ''
 
@@ -31,7 +39,7 @@ var _request = function(verb, type, data, options, _this, cb) {
       url += '/v1/token/'
       break
     default:
-      throw err("Request Type not defined")
+      throw err('Request Type not defined')
   }
   needle.request(verb, url, data, options, function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
@@ -107,14 +115,6 @@ var formatVideoResults = function(body) {
   return results
 }
 
-var _array = function(str) {
-  if (_.isArray(str)) {
-    return str
-  } else {
-    return [str]
-  }
-}
-
 Clarifai.prototype.headers = function() {
   return { 'Authorization': this.tokenType + ' ' + this.accessToken }
 }
@@ -178,25 +178,20 @@ Clarifai.prototype.associateSearchTerms = function(docIds, terms, cb) {
 }
 
 Clarifai.prototype.getAPIDetails = function(cb) {
-  var _this = this
   _request('get', 'info', null, this.options, this, function(err, body) {
     cb(err, body.results)
   })
 }
 
-Clarifai.prototype.tagImagesFromUrls = function(urls, cb, lang) {
+Clarifai.prototype.tagFromUrls = function(type, urls, cb, lang) {
   var data = _encodeTagUrls(urls, lang)
 
   _request('post', 'tag', data, this.options, this, function(err, body) {
-    cb(err, formatImageResults(body))
-  })
-}
-
-Clarifai.prototype.tagVideosFromUrls = function(urls, cb, lang) {
-  var data = _encodeTagUrls(urls, lang)
-
-  _request('post', 'tag', data, this.options, this, function(err, body) {
-    cb(err, formatVideoResults(body))
+    if (type === 'image') {
+      cb(err, formatImageResults(body))
+    } else{
+      cb(err, formatVideoResults(body))
+    }
   })
 }
 

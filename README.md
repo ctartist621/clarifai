@@ -42,7 +42,7 @@ client.getAccessToken(function(err, accessToken) {
 
 ###  Image Tagging via url
 ```
-client.tagImagesFromUrls(url(s), function(err, results) {
+client.tagFromUrls('image', url, function(err, results) {
   // Callback code here
 }, [language])
 ```
@@ -118,7 +118,7 @@ If one image was passed in, the results object will be the single object represe
 
 ### Video Tagging via url
 ```
-client.tagVideosFromUrls(url(s), function(err, results) {
+client.tagFromUrls('video', url, function(err, results) {
   // Callback code here
 }, [language])
 ```
