@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "A Node integration library for clarifai",
   "main": "index.js",
+  "engines": {
+    "node": "0.12.9",
+    "npm": "2.14.9"
+  },
   "scripts": {
     "test": "./node_modules/.bin/mocha"
   },

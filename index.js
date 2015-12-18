@@ -54,7 +54,6 @@ Clarifai.prototype.getAccessToken = function(cb) {
     _this.expiresIn = body.expires_in
     _this.scope = body.scope
     _this.tokenType = body.token_type
-    console.log("Access Token :: " + _this.accessToken)
     cb(err, body)
   });
 }
