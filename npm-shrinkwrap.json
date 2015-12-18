@@ -1,0 +1,35 @@
+{
+  "name": "clarifai",
+  "version": "0.2.0",
+  "dependencies": {
+    "lodash": {
+      "version": "3.10.1",
+      "from": "lodash@3.10.1",
+      "resolved": "http://registry.npmjs.org/lodash/-/lodash-3.10.1.tgz"
+    },
+    "needle": {
+      "version": "0.11.0",
+      "from": "needle@0.11.0",
+      "resolved": "http://registry.npmjs.org/needle/-/needle-0.11.0.tgz",
+      "dependencies": {
+        "debug": {
+          "version": "2.2.0",
+          "from": "debug@>=2.1.2 <3.0.0",
+          "resolved": "http://registry.npmjs.org/debug/-/debug-2.2.0.tgz",
+          "dependencies": {
+            "ms": {
+              "version": "0.7.1",
+              "from": "ms@0.7.1",
+              "resolved": "http://registry.npmjs.org/ms/-/ms-0.7.1.tgz"
+            }
+          }
+        },
+        "iconv-lite": {
+          "version": "0.4.13",
+          "from": "iconv-lite@>=0.4.4 <0.5.0",
+          "resolved": "http://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.13.tgz"
+        }
+      }
+    }
+  }
+}
