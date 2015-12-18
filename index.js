@@ -80,7 +80,7 @@ Clarifai.prototype.tagImageFromUrl = function(url, cb) {
   });
 }
 
-Clarifai.prototype.tagImagesFromUrls = function(urls, cb) {
+Clarifai.prototype.tagImagesFromUrls = function(urls, cb, lang) {
   var data = ""
 
   if (!_.isArray(urls)) {
@@ -89,6 +89,10 @@ Clarifai.prototype.tagImagesFromUrls = function(urls, cb) {
 
   for (var url of urls) {
     data += encodeURI("url=" + url) + "&"
+  }
+
+  if (lang) {
+    data += "language=" + lang
   }
 
   var options = {

@@ -23,6 +23,16 @@ describe('#Tagging', function() {
     })
   });
 
+  it('should tag an image from a url in another language', function(done) {
+    var url = 'http://www.clarifai.com/img/metro-north.jpg'
+    client.tagImagesFromUrls(url, function(err, resp) {
+      should.not.exist(err)
+      resp.should.have.property('docId')
+      resp.should.have.property('tags').with.length.above(0)
+      done()
+    }, 'es')
+  });
+
   it('should tag multiple images from a set of urls', function(done) {
     var urls = [
       'http://www.clarifai.com/img/metro-north.jpg',
