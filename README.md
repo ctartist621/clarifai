@@ -50,69 +50,112 @@ This function will take one image url, or many image urls as an array.  The lang
 
 The callback returns the standard error / results.  The results object returned has the following structure:
 ```
-{ docId: 15512461224882630000,
+{
+  docId: 15512461224882630000,
   docIdStr: '31fdb2316ff87fb5d747554ba5267313',
-  tags:
-   [ { class: 'train',
-       conceptId: 'ai_HLmqFqBf',
-       probability: 0.9989112019538879 },
-     { class: 'railway',
-       conceptId: 'ai_fvlBqXZR',
-       probability: 0.9975532293319702 },
-     { class: 'transportation system',
-       conceptId: 'ai_Xxjc3MhT',
-       probability: 0.9959157705307007 },
-     { class: 'station',
-       conceptId: 'ai_6kTjGfF6',
-       probability: 0.9925730228424072 },
-     { class: 'train',
-       conceptId: 'ai_RRXLczch',
-       probability: 0.9925559759140015 },
-     { class: 'travel',
-       conceptId: 'ai_VRmbGVWh',
-       probability: 0.9878921508789062 },
-     { class: 'tube',
-       conceptId: 'ai_SHNDcmJ3',
-       probability: 0.9816359281539917 },
-     { class: 'commuter',
-       conceptId: 'ai_jlb9q33b',
-       probability: 0.9712483286857605 },
-     { class: 'railway',
-       conceptId: 'ai_46lGZ4Gm',
-       probability: 0.9690325260162354 },
-     { class: 'traffic',
-       conceptId: 'ai_tr0MBp64',
-       probability: 0.9687051773071289 },
-     { class: 'blur',
-       conceptId: 'ai_l4WckcJN',
-       probability: 0.9667078256607056 },
-     { class: 'platform',
-       conceptId: 'ai_2gkfMDsM',
-       probability: 0.9624242782592773 },
-     { class: 'urban',
-       conceptId: 'ai_CpFBRWzD',
-       probability: 0.960752010345459 },
-     { class: 'no person',
-       conceptId: 'ai_786Zr311',
-       probability: 0.9586490392684937 },
-     { class: 'business',
-       conceptId: 'ai_6lhccv44',
-       probability: 0.9572030305862427 },
-     { class: 'track',
-       conceptId: 'ai_971KsJkn',
-       probability: 0.9494642019271851 },
-     { class: 'city',
-       conceptId: 'ai_WBQfVV0p',
-       probability: 0.940894365310669 },
-     { class: 'fast',
-       conceptId: 'ai_dSCKh8xv',
-       probability: 0.9399334192276001 },
-     { class: 'road',
-       conceptId: 'ai_TZ3C79C6',
-       probability: 0.9312160611152649 },
-     { class: 'terminal',
-       conceptId: 'ai_VSVscs9k',
-       probability: 0.9230834245681763 } ] }
+  tags: [
+    {
+      class: 'train',
+      conceptId: 'ai_HLmqFqBf',
+      probability: 0.9989112019538879
+    },
+    {
+      class: 'railway',
+      conceptId: 'ai_fvlBqXZR',
+      probability: 0.9975532293319702
+    },
+    {
+      class: 'transportation system',
+      conceptId: 'ai_Xxjc3MhT',
+      probability: 0.9959157705307007
+    },
+    {
+      class: 'station',
+      conceptId: 'ai_6kTjGfF6',
+      probability: 0.9925730228424072
+    },
+    {
+      class: 'train',
+      conceptId: 'ai_RRXLczch',
+      probability: 0.9925559759140015
+    },
+    {
+      class: 'travel',
+      conceptId: 'ai_VRmbGVWh',
+      probability: 0.9878921508789062
+    },
+    {
+      class: 'tube',
+      conceptId: 'ai_SHNDcmJ3',
+      probability: 0.9816359281539917
+    },
+    {
+      class: 'commuter',
+      conceptId: 'ai_jlb9q33b',
+      probability: 0.9712483286857605
+    },
+    {
+      class: 'railway',
+      conceptId: 'ai_46lGZ4Gm',
+      probability: 0.9690325260162354
+    },
+    {
+      class: 'traffic',
+      conceptId: 'ai_tr0MBp64',
+      probability: 0.9687051773071289
+    },
+    {
+      class: 'blur',
+      conceptId: 'ai_l4WckcJN',
+      probability: 0.9667078256607056
+    },
+    {
+      class: 'platform',
+      conceptId: 'ai_2gkfMDsM',
+      probability: 0.9624242782592773
+    },
+    {
+      class: 'urban',
+      conceptId: 'ai_CpFBRWzD',
+      probability: 0.960752010345459
+    },
+    {
+      class: 'no person',
+      conceptId: 'ai_786Zr311',
+      probability: 0.9586490392684937
+    },
+    {
+      class: 'business',
+      conceptId: 'ai_6lhccv44',
+      probability: 0.9572030305862427
+    },
+    {
+      class: 'track',
+      conceptId: 'ai_971KsJkn',
+      probability: 0.9494642019271851
+    },
+    {
+      class: 'city',
+      conceptId: 'ai_WBQfVV0p',
+      probability: 0.940894365310669
+    },
+    {
+      class: 'fast',
+      conceptId: 'ai_dSCKh8xv',
+      probability: 0.9399334192276001
+    },
+    {
+      class: 'road',
+      conceptId: 'ai_TZ3C79C6',
+      probability: 0.9312160611152649
+    },
+    {
+      class: 'terminal',
+      conceptId: 'ai_VSVscs9k',
+      probability: 0.9230834245681763
+    }
+  ]
+}
 ```
 If one image was passed in, the results object will be the single object representing the results for that image.  If more than one was passed in, it will be an array of results objects.
 
