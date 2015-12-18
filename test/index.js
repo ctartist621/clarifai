@@ -11,3 +11,15 @@ describe('#Authentication', function() {
     })
   })
 })
+
+describe('#Tagging', function() {
+  it('should tag an image from a url', function(done) {
+    var url = 'http://www.clarifai.com/img/metro-north.jpg'
+    client.tagImageFromUrl(url, function(err, resp) {
+      should.not.exist(err)
+      resp.should.have.property('docId')
+      resp.should.have.property('tags').with.length.above(0)
+      done()
+    })
+  });
+});
