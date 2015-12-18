@@ -1,14 +1,15 @@
 var should = require('chai').should(),
-    Clarifai = require('../index')
+    Clarifai = require('../index'),
+    client
 
 if (process.env.CIRCLECI) {
-  var client = new Clarifai({
+  client = new Clarifai({
     id: process.env.CLARIFAI_ID,
     secret: process.env.CLARIFAI_SECRET,
   })
 
 } else {
-  var client = new Clarifai(require('../testCreds.json'))
+  client = new Clarifai(require('../testCreds.json'))
 }
 
 describe('#Authentication', function() {
