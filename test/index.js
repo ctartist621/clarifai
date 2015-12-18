@@ -104,7 +104,7 @@ describe('#Tagging', function() {
       }, 'es')
     });
 
-    it('should tag multiple videos from a set of urls', function(done) {
+    it.skip('should tag multiple videos from a set of urls', function(done) {
       this.timeout(60000);
       var urls = [
         'http://html5videoformatconverter.com/data/images/happyfit2.mp4',
@@ -171,7 +171,7 @@ describe('#Feedback', function() {
     })
   });
 
-  it('#runme should add similar docids for a given docid', function(done) {
+  it('should add similar docids for a given docid', function(done) {
     var docIds = ['78c742b9dee940c8cf2a06f860025141']
     var similarIds = ['fc957ec10abcc0f4507475827626200a']
     client.addSimilarDocIds(docIds, similarIds, function(err, resp) {
