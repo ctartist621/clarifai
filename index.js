@@ -114,6 +114,23 @@ Clarifai.prototype.addSimilarDocIds = function(docIds, tags, cb) {
   });
 }
 
+Clarifai.prototype.addDissimilarDocIds = function(docIds, tags, cb) {
+  var data = ""
+  data +="docids=" + docIds.join(',')
+  data +="&dissimilar_docids=" + tags.join(',')
+
+  var _this = this
+  needle.post('https://api.clarifai.com/v1/feedback/', data, this.options, function(err, resp, body) {
+    if (body.status_code == 'TOKEN_INVALID') {
+      _this.getAccessToken(function(err, resp) {
+        _this.tagImageFromUrl(url, cb)
+      })
+    } else {
+      cb(err, body)
+    }
+  });
+}
+
 Clarifai.prototype.getAPIDetails = function(cb) {
   var _this = this
   needle.get('https://api.clarifai.com/v1/info/', this.options, function(err, resp, body) {

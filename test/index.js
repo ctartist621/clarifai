@@ -113,4 +113,15 @@ describe('#Feedback', function() {
       done()
     })
   });
+
+  it('should add dissimilar docids for a given docid', function(done) {
+    var docIds = ['78c742b9dee940c8cf2a06f860025141']
+    var dissimilarIds = ['acd57ec10abcc0f4507475827626785f']
+    client.addDissimilarDocIds(docIds, dissimilarIds, function(err, resp) {
+      should.not.exist(err)
+      resp.should.have.property('status_code').with.string('OK')
+      resp.should.have.property('status_msg')
+      done()
+    })
+  });
 });
