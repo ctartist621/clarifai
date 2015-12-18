@@ -1,7 +1,7 @@
 [![Circle CI](https://circleci.com/gh/ctartist621/clarifai/tree/master.svg?style=svg&circle-token=e15ad7ff3e856e1b86fb002868fb4c9e98d4e22e)](https://circleci.com/gh/ctartist621/clarifai/tree/master) [![npm version](https://badge.fury.io/js/clarifai.svg)](https://badge.fury.io/js/clarifai) [![Codacy Badge](https://api.codacy.com/project/badge/grade/fd34502ca14c4c0ba556e90a81d77991)](https://www.codacy.com/app/ctartist621/clarifai)
 
 # clarifai
-clarifai api wrapper
+A Node integration library for clarifai
 
 
 ## Installation
@@ -30,7 +30,7 @@ And initializing is simply
 client = new Clarifai()
 ```
 
-##Authentication
+## Authentication
 Once initialized, the library will take care of renewing the access token as it expires.  If you need to OAuth for an access token, you can simply call:
 ```
 client.getAccessToken(function(err, accessToken) {
@@ -38,9 +38,9 @@ client.getAccessToken(function(err, accessToken) {
 })
 ```
 
-##Tagging
+## Tagging
 
-###Image Tagging via url
+###  Image Tagging via url
 ```
 client.tagImagesFromUrls(url(s), function(err, results) {
   // Callback code here
@@ -116,7 +116,7 @@ The callback returns the standard error / results.  The results object returned 
 ```
 If one image was passed in, the results object will be the single object representing the results for that image.  If more than one was passed in, it will be an array of results objects.
 
-###Video Tagging via url
+### Video Tagging via url
 ```
 client.tagVideosFromUrls(url(s), function(err, results) {
   // Callback code here
@@ -202,7 +202,7 @@ Each classification is taken at 1 second keyframes by clarifai, so each keyframe
 If one video was passed in, the results object will be the single object representing the results for that image.  If more than one was passed in, it will be an array of results objects.
 
 
-##Feedback
+## Feedback
 For all the feedback functions, any input parameters can be a single string, or an array of strings.
 
 Any positive response will look like:
@@ -259,7 +259,7 @@ client.associateSearchTerms(docIds, terms, function(err, resp) {
 })
 ```
 
-##API Info
+## API Info
 Retrieves information about the API.
 ```
 client.getAPIDetails(function(err, resp) {
