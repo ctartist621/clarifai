@@ -23,7 +23,7 @@ describe('#Tagging', function() {
   describe('#Images', function() {
     it('should tag an image from a url', function(done) {
       var url = 'http://www.clarifai.com/img/metro-north.jpg'
-      client.tagImagesFromUrls(url, function(err, resp) {
+      client.tagFromUrls('image', url, function(err, resp) {
         should.not.exist(err)
         resp.should.have.property('docId')
         resp.should.have.property('docIdStr')
@@ -37,7 +37,7 @@ describe('#Tagging', function() {
 
     it('should tag an image from a url in another language', function(done) {
       var url = 'http://www.clarifai.com/img/metro-north.jpg'
-      client.tagImagesFromUrls(url, function(err, resp) {
+      client.tagFromUrls('image', url, function(err, resp) {
         should.not.exist(err)
         resp.should.have.property('docId')
         resp.should.have.property('docIdStr')
@@ -55,7 +55,7 @@ describe('#Tagging', function() {
         'http://www.clarifai.com/img/metro-north.jpg',
       ]
 
-      client.tagImagesFromUrls(urls, function(err, resp) {
+      client.tagFromUrls('image', urls, function(err, resp) {
         should.not.exist(err)
         resp.should.have.length(2)
         resp[0].should.have.property('docId')
@@ -69,11 +69,11 @@ describe('#Tagging', function() {
     });
   });
 
-  describe.skip('#Videos', function() {
+  describe('#Videos', function() {
     it('should tag a video from a url', function(done) {
       this.timeout(20000);
-      var url = 'https://archive.org/download/test-mpeg/test-mpeg.mpg'
-      client.tagVideosFromUrls(url, function(err, resp) {
+      var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
+      client.tagFromUrls('video', url, function(err, resp) {
         should.not.exist(err)
         resp.should.have.property('docId')
         resp.should.have.property('docIdStr')
@@ -88,9 +88,9 @@ describe('#Tagging', function() {
     });
 
     it('should tag an video from a url in another language', function(done) {
-      var url = 'https://archive.org/download/test-mpeg/test-mpeg.mpg'
+      var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
       this.timeout(20000);
-      client.tagVideosFromUrls(url, function(err, resp) {
+      client.tagFromUrls('video', url, function(err, resp) {
         should.not.exist(err)
         resp.should.have.property('docId')
         resp.should.have.property('docIdStr')
@@ -104,13 +104,13 @@ describe('#Tagging', function() {
       }, 'es')
     });
 
-    it('should tag multiple videos from a set of urls', function(done) {
+    it.skip('should tag multiple videos from a set of urls', function(done) {
       this.timeout(60000);
       var urls = [
-        'https://archive.org/download/test-mpeg/test-mpeg.mpg',
-        'https://archive.org/download/test-mpeg/test-mpeg.mpg',
+        'http://html5videoformatconverter.com/data/images/happyfit2.mp4',
+        'http://html5videoformatconverter.com/data/images/happyfit2.mp4',
       ]
-      client.tagVideosFromUrls(urls, function(err, resp) {
+      client.tagFromUrls('video', urls, function(err, resp) {
         should.not.exist(err)
         resp.should.have.length(2)
         resp[0].should.have.property('docId')
