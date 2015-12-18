@@ -90,6 +90,22 @@ describe('#Tagging', function() {
       })
     });
 
+    it('should tag an video from a url in another language', function(done) {
+      var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
+      client.tagVideosFromUrls(url, function(err, resp) {
+        should.not.exist(err)
+        resp.should.have.property('docId')
+        resp.should.have.property('docIdStr')
+        resp.should.have.property('timestamps').with.length.above(0)
+        resp.timestamps[0].should.have.property('timestamp')
+        resp.timestamps[0].should.have.property('tags').with.length.above(0)
+        resp.timestamps[0].tags[0].should.have.property('class')
+        resp.timestamps[0].tags[0].should.have.property('conceptId')
+        resp.timestamps[0].tags[0].should.have.property('probability')
+        done()
+      }, 'es')
+    });
+
     it('should tag multiple videos from a set of urls', function(done) {
      this.timeout(60000);
       var urls = [
