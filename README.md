@@ -209,7 +209,7 @@ Any positive response will look like:
 ```
 {
   "status_code": "OK",
-  "status_msg": "Feedback sucessfully recorded. "
+  "status_msg": "Feedback sucessfully recorded."
 }
 ```
 
@@ -230,6 +230,7 @@ var tags = ['sky','clean','red']
 client.removeTags(docIds, tags, function(err, resp) {
   // Callback code here
 })
+```
 
 ### Add similar docids for a given docid
 ```
@@ -264,7 +265,7 @@ Retrieves information about the API.
 client.getAPIDetails(function(err, resp) {
   // Callback code here
 })
-
+```
 Response will look like:
 ```
 {

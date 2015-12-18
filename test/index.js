@@ -3,10 +3,7 @@ var should = require('chai').should(),
     client
 
 if (process.env.CIRCLECI) {
-  client = new Clarifai({
-    id: process.env.CLARIFAI_ID,
-    secret: process.env.CLARIFAI_SECRET,
-  })
+  client = new Clarifai()
 } else {
   client = new Clarifai(require('../testCreds.json'))
 }
@@ -60,7 +57,7 @@ describe('#Tagging', function() {
 
       client.tagImagesFromUrls(urls, function(err, resp) {
         should.not.exist(err)
-        resp.should.have.length(3)
+        resp.should.have.length(2)
         resp[0].should.have.property('docId')
         resp[0].should.have.property('docIdStr')
         resp[0].should.have.property('tags').with.length.above(0)
@@ -115,7 +112,7 @@ describe('#Tagging', function() {
       ]
       client.tagVideosFromUrls(urls, function(err, resp) {
         should.not.exist(err)
-        resp.should.have.length(3)
+        resp.should.have.length(2)
         resp[0].should.have.property('docId')
         resp[0].should.have.property('docIdStr')
         resp[0].should.have.property('timestamps').with.length.above(0)
