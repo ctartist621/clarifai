@@ -3,10 +3,7 @@ var should = require('chai').should(),
     client
 
 if (process.env.CIRCLECI) {
-  client = new Clarifai({
-    id: process.env.CLARIFAI_ID,
-    secret: process.env.CLARIFAI_SECRET,
-  })
+  client = new Clarifai()
 } else {
   client = new Clarifai(require('../testCreds.json'))
 }
