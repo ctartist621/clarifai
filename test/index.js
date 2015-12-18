@@ -7,7 +7,6 @@ if (process.env.CIRCLECI) {
     id: process.env.CLARIFAI_ID,
     secret: process.env.CLARIFAI_SECRET,
   })
-
 } else {
   client = new Clarifai(require('../testCreds.json'))
 }
