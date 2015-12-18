@@ -1,0 +1,32 @@
+{
+  "name": "clarifai",
+  "version": "0.1.0",
+  "description": "A Node integration library for clarifai",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://ctartist621@github.com/ctartist621/clarifai.git"
+  },
+  "keywords": [
+    "clarifai",
+    "AI",
+    "artificial",
+    "intelligence",
+    "video",
+    "image",
+    "tagging"
+  ],
+  "author": "David B Mittelman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ctartist621/clarifai/issues"
+  },
+  "homepage": "https://github.com/ctartist621/clarifai#readme",
+  "devDependencies": {
+  },
+  "dependencies": {
+  }
+}
