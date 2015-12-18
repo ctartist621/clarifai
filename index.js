@@ -97,10 +97,10 @@ Clarifai.prototype.removeTags = function(docIds, tags, cb) {
   });
 }
 
-Clarifai.prototype.addSimilarDocIds = function(docIds, tags, cb) {
+Clarifai.prototype.addSimilarDocIds = function(docIds, otherIds, cb) {
   var data = ""
   data +="docids=" + docIds.join(',')
-  data +="&similar_docids=" + tags.join(',')
+  data +="&similar_docids=" + otherIds.join(',')
 
   var _this = this
   needle.post('https://api.clarifai.com/v1/feedback/', data, this.options, function(err, resp, body) {
@@ -114,10 +114,27 @@ Clarifai.prototype.addSimilarDocIds = function(docIds, tags, cb) {
   });
 }
 
-Clarifai.prototype.addDissimilarDocIds = function(docIds, tags, cb) {
+Clarifai.prototype.addDissimilarDocIds = function(docIds, otherIds, cb) {
   var data = ""
   data +="docids=" + docIds.join(',')
-  data +="&dissimilar_docids=" + tags.join(',')
+  data +="&dissimilar_docids=" + otherIds.join(',')
+
+  var _this = this
+  needle.post('https://api.clarifai.com/v1/feedback/', data, this.options, function(err, resp, body) {
+    if (body.status_code == 'TOKEN_INVALID') {
+      _this.getAccessToken(function(err, resp) {
+        _this.tagImageFromUrl(url, cb)
+      })
+    } else {
+      cb(err, body)
+    }
+  });
+}
+
+Clarifai.prototype.associateSearchTerms = function(docIds, terms, cb) {
+  var data = ""
+  data +="docids=" + docIds.join(',')
+  data +="&search_click=" + terms.join(',')
 
   var _this = this
   needle.post('https://api.clarifai.com/v1/feedback/', data, this.options, function(err, resp, body) {
