@@ -1,6 +1,20 @@
 var _ = require('lodash')
 var needle = require('needle')
 
+var _encodeTagUrls = function (urls, lang) {
+  var data = ''
+
+  for (var url of _array(urls)) {
+    data += encodeURI('url=' + url) + '&'
+  }
+
+  if (lang) {
+    data += 'language=' + lang
+  }
+
+  return data
+}
+
 var _request = function(verb, type, data, options, _this, cb) {
   var url = 'https://api.clarifai.com'
   switch(type) {
@@ -171,15 +185,7 @@ Clarifai.prototype.getAPIDetails = function(cb) {
 }
 
 Clarifai.prototype.tagImagesFromUrls = function(urls, cb, lang) {
-  var data = ''
-
-  for (var url of _array(urls)) {
-    data += encodeURI('url=' + url) + '&'
-  }
-
-  if (lang) {
-    data += 'language=' + lang
-  }
+  var data = _encodeTagUrls(urls, lang)
 
   _request('post', 'tag', data, this.options, this, function(err, body) {
     cb(err, formatImageResults(body))
@@ -187,15 +193,7 @@ Clarifai.prototype.tagImagesFromUrls = function(urls, cb, lang) {
 }
 
 Clarifai.prototype.tagVideosFromUrls = function(urls, cb, lang) {
-  var data = ''
-
-  for (var url of _array(urls)) {
-    data += encodeURI('url=' + url) + '&'
-  }
-
-  if (lang) {
-    data += 'language=' + lang
-  }
+  var data = _encodeTagUrls(urls, lang)
 
   _request('post', 'tag', data, this.options, this, function(err, body) {
     cb(err, formatVideoResults(body))
