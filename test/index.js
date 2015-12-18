@@ -75,7 +75,7 @@ describe('#Tagging', function() {
 
   describe('#Videos', function() {
     it('should tag a video from a url', function(done) {
-     this.timeout(20000);
+      this.timeout(20000);
       var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
       client.tagVideosFromUrls(url, function(err, resp) {
         should.not.exist(err)
@@ -93,6 +93,7 @@ describe('#Tagging', function() {
 
     it('should tag an video from a url in another language', function(done) {
       var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
+      this.timeout(20000);
       client.tagVideosFromUrls(url, function(err, resp) {
         should.not.exist(err)
         resp.should.have.property('docId')
@@ -108,7 +109,7 @@ describe('#Tagging', function() {
     });
 
     it('should tag multiple videos from a set of urls', function(done) {
-     this.timeout(60000);
+      this.timeout(60000);
       var urls = [
         'http://html5videoformatconverter.com/data/images/happyfit2.mp4',
         'http://html5videoformatconverter.com/data/images/happyfit2.mp4',
