@@ -26,7 +26,10 @@
   },
   "homepage": "https://github.com/ctartist621/clarifai#readme",
   "devDependencies": {
+    "chai": "3.4.1",
+    "mocha": "2.3.4"
   },
   "dependencies": {
+    "needle": "0.11.0"
   }
 }
