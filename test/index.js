@@ -56,7 +56,6 @@ describe('#Tagging', function() {
       var urls = [
         'http://www.clarifai.com/img/metro-north.jpg',
         'http://www.clarifai.com/img/metro-north.jpg',
-        'http://www.clarifai.com/img/metro-north.jpg'
       ]
 
       client.tagImagesFromUrls(urls, function(err, resp) {
@@ -76,7 +75,7 @@ describe('#Tagging', function() {
   describe.skip('#Videos', function() {
     it('should tag a video from a url', function(done) {
       this.timeout(20000);
-      var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
+      var url = 'https://archive.org/download/test-mpeg/test-mpeg.mpg'
       client.tagVideosFromUrls(url, function(err, resp) {
         should.not.exist(err)
         resp.should.have.property('docId')
@@ -92,7 +91,7 @@ describe('#Tagging', function() {
     });
 
     it('should tag an video from a url in another language', function(done) {
-      var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
+      var url = 'https://archive.org/download/test-mpeg/test-mpeg.mpg'
       this.timeout(20000);
       client.tagVideosFromUrls(url, function(err, resp) {
         should.not.exist(err)
@@ -111,9 +110,8 @@ describe('#Tagging', function() {
     it('should tag multiple videos from a set of urls', function(done) {
       this.timeout(60000);
       var urls = [
-        'http://html5videoformatconverter.com/data/images/happyfit2.mp4',
-        'http://html5videoformatconverter.com/data/images/happyfit2.mp4',
-        'http://html5videoformatconverter.com/data/images/happyfit2.mp4',
+        'https://archive.org/download/test-mpeg/test-mpeg.mpg',
+        'https://archive.org/download/test-mpeg/test-mpeg.mpg',
       ]
       client.tagVideosFromUrls(urls, function(err, resp) {
         should.not.exist(err)
