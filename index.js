@@ -48,7 +48,7 @@ Clarifai.prototype.headers = function() {
 }
 
 Clarifai.prototype.getAccessToken = function(cb) {
-  _this = this
+  var _this = this
   needle.post('https://api.clarifai.com/v1/token/', {
     grant_type: 'client_credentials',
     client_id: this.id,
@@ -58,17 +58,31 @@ Clarifai.prototype.getAccessToken = function(cb) {
     _this.expiresIn = body.expires_in
     _this.scope = body.scope
     _this.tokenType = body.token_type
+    _this.options = { headers: _this.headers() }
     cb(err, body)
+  })
+}
+
+Clarifai.prototype.addTags = function(docId, tags, cb) {
+  var data = ""
+  data +="docids=" + docId
+  data +="&add_tags=" + tags.join(',')
+
+  var _this = this
+  needle.post('https://api.clarifai.com/v1/feedback/', data, this.options, function(err, resp, body) {
+    if (body.status_code == 'TOKEN_INVALID') {
+      _this.getAccessToken(function(err, resp) {
+        _this.tagImageFromUrl(url, cb)
+      })
+    } else {
+      cb(err, body)
+    }
   });
 }
 
 Clarifai.prototype.getAPIDetails = function(cb) {
-  var options = {
-    headers: this.headers()
-  }
-
-  _this = this
-  needle.get('https://api.clarifai.com/v1/info/', options, function(err, resp, body) {
+  var _this = this
+  needle.get('https://api.clarifai.com/v1/info/', this.options, function(err, resp, body) {
     if (body.status_code == 'TOKEN_INVALID') {
       _this.getAccessToken(function(err, resp) {
         _this.tagImageFromUrl(url, cb)
@@ -84,12 +98,8 @@ Clarifai.prototype.tagImageFromUrl = function(url, cb) {
     url: url
   }
 
-  var options = {
-    headers: this.headers()
-  }
-  _this = this
-
-  needle.request('get', 'https://api.clarifai.com/v1/tag/', data, options, function(err, resp, body) {
+  var _this = this
+  needle.request('get', 'https://api.clarifai.com/v1/tag/', data, this.options, function(err, resp, body) {
     if (body.status_code == 'TOKEN_INVALID') {
       _this.getAccessToken(function(err, resp) {
         _this.tagImageFromUrl(url, cb)
@@ -115,12 +125,8 @@ Clarifai.prototype.tagImagesFromUrls = function(urls, cb, lang) {
     data += "language=" + lang
   }
 
-  var options = {
-    headers: this.headers()
-  }
-  _this = this
-
-  needle.post('https://api.clarifai.com/v1/tag/', data, options, function(err, resp, body) {
+  var _this = this
+  needle.post('https://api.clarifai.com/v1/tag/', data, this.options, function(err, resp, body) {
     if (body.status_code == 'TOKEN_INVALID') {
       _this.getAccessToken(function(err, resp) {
         _this.tagImageFromUrl(url, cb)

@@ -80,3 +80,18 @@ describe('#Information', function() {
   });
 });
 
+describe('#Feedback', function() {
+  it('should add tags or give positive feedback for tags to a docid', function(done) {
+    var docId = '78c742b9dee940c8cf2a06f860025141'
+    var tags = ['car','dashboard','driving']
+    client.addTags(docId, tags, function(err, resp) {
+      should.not.exist(err)
+      resp.should.have.property('status_code').with.string('OK')
+      resp.should.have.property('status_msg')
+      done()
+    })
+  });
+      done()
+    })
+  });
+});
