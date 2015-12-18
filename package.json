@@ -8,7 +8,8 @@
     "npm": "2.14.9"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "./node_modules/.bin/mocha",
+    "2npm": "publish"
   },
   "repository": {
     "type": "git",
@@ -31,7 +32,8 @@
   "homepage": "https://github.com/ctartist621/clarifai#readme",
   "devDependencies": {
     "chai": "3.4.1",
-    "mocha": "2.3.4"
+    "mocha": "2.3.4",
+    "publish": "0.5.0"
   },
   "dependencies": {
     "lodash": "3.10.1",
