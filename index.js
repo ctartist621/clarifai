@@ -23,8 +23,19 @@ var _encodeTagUrls = function (urls, lang) {
   return data
 }
 
+var _parseErr = function(err, resp, body, cb) {
+  if(err) {
+    cb(err)
+  } else if((resp.statusCode !== 200 && resp.statusCode !== 201) || body.status_code === 'PARTIAL_ERROR') {
+    cb(body)
+  } else {
+    cb(err, body)
+  }
+}
+
 var _request = function(verb, type, data, options, _this, cb) {
   var url = 'https://api.clarifai.com'
+
   switch(type) {
     case 'feedback':
       url += '/v1/feedback/'
@@ -41,6 +52,7 @@ var _request = function(verb, type, data, options, _this, cb) {
     default:
       throw err('Request Type not defined')
   }
+
   needle.request(verb, url, data, options, function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
@@ -49,12 +61,12 @@ var _request = function(verb, type, data, options, _this, cb) {
         } else {
           options = { headers: _this.headers() }
           needle.request(verb, url, data, options, function(err, resp, body) {
-            cb(err, body)
+            _parseErr(err, resp, body, cb)
           })
         }
       })
     } else {
-      cb(err, body)
+      _parseErr(err, resp, body, cb)
     }
   })
 }
@@ -187,7 +199,9 @@ Clarifai.prototype.tagFromUrls = function(type, urls, cb, lang) {
   var data = _encodeTagUrls(urls, lang)
 
   _request('post', 'tag', data, this.options, this, function(err, body) {
-    if (type === 'image') {
+    if(err) {
+      cb(err)
+    } else if (type === 'image') {
       cb(err, formatImageResults(body))
     } else{
       cb(err, formatVideoResults(body))

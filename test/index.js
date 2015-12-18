@@ -69,10 +69,10 @@ describe('#Tagging', function() {
     });
   });
 
-  describe.skip('#Videos', function() {
+  describe('#Videos', function() {
     it('should tag a video from a url', function(done) {
       this.timeout(20000);
-      var url = 'https://archive.org/download/test-mpeg/test-mpeg.mpg'
+      var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
       client.tagFromUrls('video', url, function(err, resp) {
         should.not.exist(err)
         resp.should.have.property('docId')
@@ -88,7 +88,7 @@ describe('#Tagging', function() {
     });
 
     it('should tag an video from a url in another language', function(done) {
-      var url = 'https://archive.org/download/test-mpeg/test-mpeg.mpg'
+      var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
       this.timeout(20000);
       client.tagFromUrls('video', url, function(err, resp) {
         should.not.exist(err)
@@ -107,8 +107,8 @@ describe('#Tagging', function() {
     it('should tag multiple videos from a set of urls', function(done) {
       this.timeout(60000);
       var urls = [
-        'https://archive.org/download/test-mpeg/test-mpeg.mpg',
-        'https://archive.org/download/test-mpeg/test-mpeg.mpg',
+        'http://html5videoformatconverter.com/data/images/happyfit2.mp4',
+        'http://html5videoformatconverter.com/data/images/happyfit2.mp4',
       ]
       client.tagFromUrls('video', urls, function(err, resp) {
         should.not.exist(err)
@@ -171,7 +171,7 @@ describe('#Feedback', function() {
     })
   });
 
-  it('should add similar docids for a given docid', function(done) {
+  it('#runme should add similar docids for a given docid', function(done) {
     var docIds = ['78c742b9dee940c8cf2a06f860025141']
     var similarIds = ['fc957ec10abcc0f4507475827626200a']
     client.addSimilarDocIds(docIds, similarIds, function(err, resp) {
