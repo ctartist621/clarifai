@@ -73,20 +73,24 @@ Clarifai.prototype.getAccessToken = function(cb) {
     _this.scope = body.scope
     _this.tokenType = body.token_type
     _this.options = { headers: _this.headers() }
-    cb(err, body)
+    cb(err)
   })
 }
 
 Clarifai.prototype.addTags = function(docIds, tags, cb) {
-  var data = ""
-  data +="docids=" + docIds.join(',')
-  data +="&add_tags=" + tags.join(',')
+  var data = ''
+  data +='docids=' + docIds.join(',')
+  data +='&add_tags=' + tags.join(',')
 
   var _this = this
   needle.post('https://api.clarifai.com/v1/feedback/', data, this.options, function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
-        _this.tagImageFromUrl(url, cb)
+        if(err) {
+          cb(err)
+        } else {
+          _this.addTags(url, cb)
+        }
       })
     } else {
       cb(err, body)
@@ -95,15 +99,19 @@ Clarifai.prototype.addTags = function(docIds, tags, cb) {
 }
 
 Clarifai.prototype.removeTags = function(docIds, tags, cb) {
-  var data = ""
-  data +="docids=" + docIds.join(',')
-  data +="&remove_tags=" + tags.join(',')
+  var data = ''
+  data +='docids=' + docIds.join(',')
+  data +='&remove_tags=' + tags.join(',')
 
   var _this = this
   needle.post('https://api.clarifai.com/v1/feedback/', data, this.options, function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
-        _this.tagImageFromUrl(url, cb)
+        if(err) {
+          cb(err)
+        } else {
+          _this.removeTags(url, cb)
+        }
       })
     } else {
       cb(err, body)
@@ -112,15 +120,19 @@ Clarifai.prototype.removeTags = function(docIds, tags, cb) {
 }
 
 Clarifai.prototype.addSimilarDocIds = function(docIds, otherIds, cb) {
-  var data = ""
-  data +="docids=" + docIds.join(',')
-  data +="&similar_docids=" + otherIds.join(',')
+  var data = ''
+  data +='docids=' + docIds.join(',')
+  data +='&similar_docids=' + otherIds.join(',')
 
   var _this = this
   needle.post('https://api.clarifai.com/v1/feedback/', data, this.options, function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
-        _this.tagImageFromUrl(url, cb)
+        if(err) {
+          cb(err)
+        } else {
+          _this.addSimilarDocIds(url, cb)
+        }
       })
     } else {
       cb(err, body)
@@ -129,15 +141,19 @@ Clarifai.prototype.addSimilarDocIds = function(docIds, otherIds, cb) {
 }
 
 Clarifai.prototype.addDissimilarDocIds = function(docIds, otherIds, cb) {
-  var data = ""
-  data +="docids=" + docIds.join(',')
-  data +="&dissimilar_docids=" + otherIds.join(',')
+  var data = ''
+  data +='docids=' + docIds.join(',')
+  data +='&dissimilar_docids=' + otherIds.join(',')
 
   var _this = this
   needle.post('https://api.clarifai.com/v1/feedback/', data, this.options, function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
-        _this.tagImageFromUrl(url, cb)
+        if(err) {
+          cb(err)
+        } else {
+          _this.addDissimilarDocIds(url, cb)
+        }
       })
     } else {
       cb(err, body)
@@ -146,15 +162,19 @@ Clarifai.prototype.addDissimilarDocIds = function(docIds, otherIds, cb) {
 }
 
 Clarifai.prototype.associateSearchTerms = function(docIds, terms, cb) {
-  var data = ""
-  data +="docids=" + docIds.join(',')
-  data +="&search_click=" + terms.join(',')
+  var data = ''
+  data +='docids=' + docIds.join(',')
+  data +='&search_click=' + terms.join(',')
 
   var _this = this
   needle.post('https://api.clarifai.com/v1/feedback/', data, this.options, function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
-        _this.tagImageFromUrl(url, cb)
+        if(err) {
+          cb(err)
+        } else {
+          _this.associateSearchTerms(url, cb)
+        }
       })
     } else {
       cb(err, body)
@@ -167,7 +187,11 @@ Clarifai.prototype.getAPIDetails = function(cb) {
   needle.get('https://api.clarifai.com/v1/info/', this.options, function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
-        _this.tagImageFromUrl(url, cb)
+        if(err) {
+          cb(err)
+        } else {
+          _this.getAPIDetails(url, cb)
+        }
       })
     } else {
       cb(err, body.results)
@@ -176,25 +200,29 @@ Clarifai.prototype.getAPIDetails = function(cb) {
 }
 
 Clarifai.prototype.tagImagesFromUrls = function(urls, cb, lang) {
-  var data = ""
+  var data = ''
 
   if (!_.isArray(urls)) {
     urls = [urls]
   }
 
   for (var url of urls) {
-    data += encodeURI("url=" + url) + "&"
+    data += encodeURI('url=' + url) + '&'
   }
 
   if (lang) {
-    data += "language=" + lang
+    data += 'language=' + lang
   }
 
   var _this = this
   needle.post('https://api.clarifai.com/v1/tag/', data, this.options, function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
-        _this.tagImagesFromUrls(urls, cb, lang)
+        if(err) {
+          cb(err)
+        } else {
+          _this.tagImagesFromUrls(url, cb)
+        }
       })
     } else {
       cb(err, formatImageResults(body))
@@ -203,25 +231,29 @@ Clarifai.prototype.tagImagesFromUrls = function(urls, cb, lang) {
 }
 
 Clarifai.prototype.tagVideosFromUrls = function(urls, cb, lang) {
-  var data = ""
+  var data = ''
 
   if (!_.isArray(urls)) {
     urls = [urls]
   }
 
   for (var url of urls) {
-    data += encodeURI("url=" + url) + "&"
+    data += encodeURI('url=' + url) + '&'
   }
 
   if (lang) {
-    data += "language=" + lang
+    data += 'language=' + lang
   }
 
   var _this = this
   needle.post('https://api.clarifai.com/v1/tag/', data, this.options, function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
-        _this.tagVideosFromUrls(urls, cb, lang)
+        if(err) {
+          cb(err)
+        } else {
+          _this.tagVideosFromUrls(url, cb)
+        }
       })
     } else {
       cb(err, formatVideoResults(body))
