@@ -43,6 +43,10 @@ var formatResults = function(body) {
 }
 
 
+Clarifai.prototype.headers = function() {
+  return { 'Authorization': this.tokenType + ' ' + this.accessToken }
+}
+
 Clarifai.prototype.getAccessToken = function(cb) {
   _this = this
   needle.post('https://api.clarifai.com/v1/token/', {
@@ -58,13 +62,30 @@ Clarifai.prototype.getAccessToken = function(cb) {
   });
 }
 
+Clarifai.prototype.getAPIDetails = function(cb) {
+  var options = {
+    headers: this.headers()
+  }
+
+  _this = this
+  needle.get('https://api.clarifai.com/v1/info/', options, function(err, resp, body) {
+    if (body.status_code == 'TOKEN_INVALID') {
+      _this.getAccessToken(function(err, resp) {
+        _this.tagImageFromUrl(url, cb)
+      })
+    } else {
+      cb(err, body.results)
+    }
+  });
+}
+
 Clarifai.prototype.tagImageFromUrl = function(url, cb) {
   var data = {
     url: url
   }
 
   var options = {
-    headers: { 'Authorization': this.tokenType + ' ' + this.accessToken }
+    headers: this.headers()
   }
   _this = this
 
@@ -95,7 +116,7 @@ Clarifai.prototype.tagImagesFromUrls = function(urls, cb, lang) {
   }
 
   var options = {
-    headers: { 'Authorization': this.tokenType + ' ' + this.accessToken },
+    headers: this.headers()
   }
   _this = this
 

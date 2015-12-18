@@ -57,5 +57,26 @@ describe('#Tagging', function() {
       done()
     })
   });
-
 });
+
+describe('#Information', function() {
+  it('should get current API Details', function(done) {
+    client.getAPIDetails(function(err, resp) {
+      should.not.exist(err)
+      resp.should.have.property('max_image_size')
+      resp.should.have.property('default_language')
+      resp.should.have.property('max_video_size')
+      resp.should.have.property('max_image_bytes')
+      resp.should.have.property('min_image_size')
+      resp.should.have.property('default_model')
+      resp.should.have.property('max_video_bytes')
+      resp.should.have.property('max_video_duration')
+      resp.should.have.property('max_batch_size')
+      resp.should.have.property('max_video_batch_size')
+      resp.should.have.property('min_video_size')
+      resp.should.have.property('api_version')
+      done()
+    })
+  });
+});
+
