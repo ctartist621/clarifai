@@ -73,7 +73,7 @@ Clarifai.prototype.getAccessToken = function(cb) {
     _this.scope = body.scope
     _this.tokenType = body.token_type
     _this.options = { headers: _this.headers() }
-    cb(err)
+    cb(err, _this.accessToken)
   })
 }
 

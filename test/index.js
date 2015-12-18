@@ -17,6 +17,7 @@ describe('#Authentication', function() {
     client.getAccessToken(function(err, resp) {
       should.not.exist(err)
       client.accessToken.should.be.a('string')
+      resp.should.be.a('string')
       done()
     })
   })
@@ -73,7 +74,7 @@ describe('#Tagging', function() {
     });
   });
 
-  describe('#Videos', function() {
+  describe.skip('#Videos', function() {
     it('should tag a video from a url', function(done) {
       this.timeout(20000);
       var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
