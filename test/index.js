@@ -91,6 +91,17 @@ describe('#Feedback', function() {
       done()
     })
   });
+
+  it('should remove tags or give negative feedback for tags to a docid', function(done) {
+    var docId = '78c742b9dee940c8cf2a06f860025141'
+    var tags = ['sky','clean','red']
+    client.removeTags(docId, tags, function(err, resp) {
+      should.not.exist(err)
+      resp.should.have.property('status_code').with.string('OK')
+      resp.should.have.property('status_msg')
+      done()
+    })
+  });
       done()
     })
   });
