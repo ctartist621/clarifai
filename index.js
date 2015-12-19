@@ -25,11 +25,11 @@ var _encodeTagUrls = function (urls, lang) {
 
 var _parseErr = function(err, resp, body, cb) {
   if(err) {
-    cb(err)
+    return cb(err)
   } else if((resp.statusCode !== 200 && resp.statusCode !== 201) || body.status_code === 'PARTIAL_ERROR') {
-    cb(body)
+    return cb(body)
   } else {
-    cb(err, body)
+    return cb(err, body)
   }
 }
 
@@ -57,7 +57,7 @@ var _request = function(verb, type, data, options, _this, cb) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
         if(err) {
-          cb(err)
+          return cb(err)
         } else {
           options = { headers: _this.headers() }
           needle.request(verb, url, data, options, function(err, resp, body) {
@@ -200,11 +200,11 @@ Clarifai.prototype.tagFromUrls = function(type, urls, cb, lang) {
 
   _request('post', 'tag', data, this.options, this, function(err, body) {
     if(err) {
-      cb(err)
+      return cb(err)
     } else if (type === 'image') {
-      cb(err, formatImageResults(body))
+      return cb(err, formatImageResults(body))
     } else{
-      cb(err, formatVideoResults(body))
+      return cb(err, formatVideoResults(body))
     }
   })
 }
@@ -212,7 +212,7 @@ Clarifai.prototype.tagFromUrls = function(type, urls, cb, lang) {
 function Clarifai (opts) {
   opts = opts || {
     id: process.env.CLARIFAI_ID,
-    secret: process.env.CLARIFAI_SECRET,
+    secret: process.env.CLARIFAI_SECRET
   }
 
   this.id = opts.id
