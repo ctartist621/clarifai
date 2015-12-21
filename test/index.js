@@ -17,6 +17,19 @@ describe('#Authentication', function() {
       done()
     })
   })
+  it('should authenticate and save an access token if one does not exist', function(done) {
+    delete client.accessToken
+    delete client.expiresIn
+    delete client.scope
+    delete client.tokenType
+    delete client.options
+    client.getAccessToken(function(err, resp) {
+      should.not.exist(err)
+      client.accessToken.should.be.a('string')
+      resp.should.be.a('string')
+      done()
+    })
+  })
 })
 
 describe('#Tagging', function() {
