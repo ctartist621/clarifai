@@ -1,7 +1,7 @@
-[![Circle CI](https://circleci.com/gh/ctartist621/clarifai/tree/master.svg?style=svg&circle-token=e15ad7ff3e856e1b86fb002868fb4c9e98d4e22e)](https://circleci.com/gh/ctartist621/clarifai/tree/master) [![npm version](https://badge.fury.io/js/clarifai.svg)](https://badge.fury.io/js/clarifai) [![Codacy Badge](https://api.codacy.com/project/badge/grade/fd34502ca14c4c0ba556e90a81d77991)](https://www.codacy.com/app/ctartist621/clarifai)
+[![Circle CI](https://circleci.com/gh/ctartist621/clarifai/tree/master.svg?style=svg&circle-token=e15ad7ff3e856e1b86fb002868fb4c9e98d4e22e)](https://circleci.com/gh/ctartist621/clarifai/tree/master) [![npm version](https://badge.fury.io/js/clarifai.svg)](https://badge.fury.io/js/clarifai) [![Codacy Badge](https://api.codacy.com/project/badge/grade/fd34502ca14c4c0ba556e90a81d77991)](https://www.codacy.com/app/ctartist621/clarifai) [![Codacy Badge](https://api.codacy.com/project/badge/coverage/fd34502ca14c4c0ba556e90a81d77991)](https://www.codacy.com/app/ctartist621/clarifai) [![Dependency Status](https://david-dm.org/ctartist621/clarifai.svg)](https://david-dm.org/ctartist621/clarifai) [![devDependency Status](https://david-dm.org/ctartist621/clarifai/dev-status.svg)](https://david-dm.org/ctartist621/clarifai#info=devDependencies)
 
 # clarifai
-A Node integration library for clarifai
+A Node integration library for [clarifai](http://clarifai.com/), a very cool content tagging api.
 
 
 ## Installation
