@@ -14,6 +14,7 @@ npm install clarifai --save
 To initialize the library, you can either pass it in a settings object with the Clarifai ID & Secret,
 
 ```
+var Clarifai = require('clarifai')
 client = new Clarifai({
   id: <clarafai id>,
   secret: <clarafai secret>
