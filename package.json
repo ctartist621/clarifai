@@ -1,6 +1,6 @@
 {
   "name": "clarifai",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A Node integration library for clarifai",
   "main": "index.js",
   "engines": {
