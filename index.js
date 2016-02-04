@@ -63,6 +63,10 @@ var _parseErr = function(err, resp, body, cb) {
   }
 }
 
+var _withAccessToken = function(_this, options) {
+  return _.merge(options, { headers: { 'Authorization': _this.tokenType + ' ' + _this.accessToken }});
+}
+
 var _request = function(verb, type, data, options, _this, cb) {
   var url = 'https://api.clarifai.com'
 
@@ -83,14 +87,13 @@ var _request = function(verb, type, data, options, _this, cb) {
       throw err('Request Type not defined')
   }
 
-  needle.request(verb, url, data, options, function(err, resp, body) {
+  needle.request(verb, url, data, _withAccessToken(_this, options), function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
         if(err) {
           return cb(err)
         } else {
-          options = { headers: _this.headers() }
-          needle.request(verb, url, data, options, function(err, resp, body) {
+          needle.request(verb, url, data, _withAccessToken(_this, options), function(err, resp, body) {
             _parseErr(err, resp, body, cb)
           })
         }
@@ -157,10 +160,6 @@ var formatVideoResults = function(body) {
   return results
 }
 
-Clarifai.prototype.headers = function() {
-  return { 'Authorization': this.tokenType + ' ' + this.accessToken }
-}
-
 Clarifai.prototype.getAccessToken = function(cb) {
   var _this = this
   var data = {
@@ -174,7 +173,6 @@ Clarifai.prototype.getAccessToken = function(cb) {
     _this.expiresIn = body.expires_in
     _this.scope = body.scope
     _this.tokenType = body.token_type
-    _this.options = { headers: _this.headers() }
     cb(err, _this.accessToken)
   })
 }
