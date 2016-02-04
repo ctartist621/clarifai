@@ -1,4 +1,6 @@
-var should = require('chai').should(),
+var fs = require('fs'),
+    path = require('path'),
+    should = require('chai').should(),
     Clarifai = require('../index'),
     client
 
@@ -138,6 +140,61 @@ describe('#Tagging', function() {
       })
     });
   });
+
+  describe('#Buffers', function() {
+    it('should tag an image from a buffer', function(done) {
+      var buffer = fs.readFileSync(path.join(__dirname, 'sky.jpg'));
+      client.tagFromBuffers('image', buffer, function(err, resp) {
+        should.not.exist(err)
+        resp.should.have.property('docId')
+        resp.should.have.property('docIdStr')
+        resp.should.have.property('tags').with.length.above(0)
+        resp.tags[0].should.have.property('class')
+        resp.tags[0].should.have.property('conceptId')
+        resp.tags[0].should.have.property('probability')
+        done()
+      })
+    });
+
+    it('should tag an image from a buffer in another language', function(done) {
+      var buffer = fs.readFileSync(path.join(__dirname, 'sky.jpg'));
+      client.tagFromBuffers('image', buffer, function(err, resp) {
+        should.not.exist(err)
+        resp.should.have.property('docId')
+        resp.should.have.property('docIdStr')
+        resp.should.have.property('tags').with.length.above(0)
+        resp.tags[0].should.have.property('class')
+        resp.tags[0].should.have.property('conceptId')
+        resp.tags[0].should.have.property('probability')
+        done()
+      }, 'es')
+    });
+
+    it('should tag multiple images from a set of buffers', function(done) {
+      var buffers = [
+        fs.readFileSync(path.join(__dirname, 'sky.jpg')),
+        fs.readFileSync(path.join(__dirname, 'sky.jpg'))
+      ];
+      client.tagFromBuffers('image', buffers, function(err, resp) {
+        should.not.exist(err)
+        resp.should.have.length(2)
+        resp[0].should.have.property('docId')
+        resp[0].should.have.property('docIdStr')
+        resp[0].should.have.property('tags').with.length.above(0)
+        resp[0].tags[0].should.have.property('class')
+        resp[0].tags[0].should.have.property('conceptId')
+        resp[0].tags[0].should.have.property('probability')
+        resp[1].should.have.property('docId')
+        resp[1].should.have.property('docIdStr')
+        resp[1].should.have.property('tags').with.length.above(0)
+        resp[1].tags[0].should.have.property('class')
+        resp[1].tags[0].should.have.property('conceptId')
+        resp[1].tags[0].should.have.property('probability')
+        done()
+      })
+    });
+  });
+
 });
 
 describe('#Information', function() {

@@ -23,6 +23,36 @@ var _encodeTagUrls = function (urls, lang) {
   return data
 }
 
+var _boundary = 'clarifai_multipart_boundary'
+
+var _partForParameter = function(name, value) {
+  var part = '--' + _boundary + '\r\nContent-Disposition: form-data; name="' + name + '"\r\n\r\n' + value + '\r\n'
+  return new Buffer(part, 'utf8');
+}
+
+var _buildMultipart = function(buffers, lang) {
+  // Build a multipart payload. We can't use needle's support for this because needle expects all
+  // parts to have distinct names while Clarifai requires multiple parts to have the same name.
+  var chunks = []
+
+  for (var buffer of _array(buffers)) {
+    var header = '--' + _boundary + '\r\n' +
+      'Content-Disposition: form-data; name="encoded_data"; filename="data"\r\n' +
+      'Content-Transfer-Encoding: binary\r\n' +
+      'Content-Type: application/octet-stream\r\n\r\n'
+    chunks.push(new Buffer(header, 'ascii'))
+    chunks.push(buffer)
+  }
+
+  if (lang) {
+    chunks.push(_partForParameter('language', lang))
+  }
+
+  chunks.push(new Buffer('--' + _boundary + '--\r\n', 'ascii'))
+
+  return Buffer.concat(chunks)
+}
+
 var _parseErr = function(err, resp, body, cb) {
   if(err) {
     return cb(err)
@@ -209,6 +239,25 @@ Clarifai.prototype.tagFromUrls = function(type, urls, cb, lang) {
   })
 }
 
+Clarifai.prototype.tagFromBuffers = function(type, buffers, cb, lang) {
+  var data = _buildMultipart(buffers, lang)
+
+  var options = _.cloneDeep(this.options || {})
+  options.headers = options.headers || {}
+  options.headers['Content-Type'] = 'multipart/form-data; boundary=' + _boundary
+  options.headers['Content-Length'] = data.length
+
+  _request('post', 'tag', data, options, this, function(err, body) {
+    if (err) {
+      return cb(err)
+    } else if (type === 'image') {
+      return cb(err, formatImageResults(body))
+    } else {
+      return cb(err, formatVideoResults(body))
+    }
+  })
+}
+
 function Clarifai (opts) {
   opts = opts || {
     id: process.env.CLARIFAI_ID,
@@ -217,6 +266,7 @@ function Clarifai (opts) {
 
   this.id = opts.id
   this.secret = opts.secret
+  this.options = {}
 }
 
 module.exports = Clarifai
