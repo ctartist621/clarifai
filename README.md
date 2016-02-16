@@ -1,7 +1,7 @@
 [![Circle CI](https://circleci.com/gh/ctartist621/clarifai/tree/master.svg?style=svg&circle-token=e15ad7ff3e856e1b86fb002868fb4c9e98d4e22e)](https://circleci.com/gh/ctartist621/clarifai/tree/master) [![npm version](https://badge.fury.io/js/clarifai.svg)](https://badge.fury.io/js/clarifai) [![Codacy Badge](https://api.codacy.com/project/badge/grade/fd34502ca14c4c0ba556e90a81d77991)](https://www.codacy.com/app/ctartist621/clarifai) [![Codacy Badge](https://api.codacy.com/project/badge/coverage/fd34502ca14c4c0ba556e90a81d77991)](https://www.codacy.com/app/ctartist621/clarifai) [![Dependency Status](https://david-dm.org/ctartist621/clarifai.svg)](https://david-dm.org/ctartist621/clarifai) [![devDependency Status](https://david-dm.org/ctartist621/clarifai/dev-status.svg)](https://david-dm.org/ctartist621/clarifai#info=devDependencies)
 
 # clarifai
-A Node integration library for [clarifai](http://clarifai.com/), a very cool content tagging api.
+A Node integration library for [Clarifai](http://clarifai.com/), a very cool content tagging api.
 
 
 ## Installation
@@ -16,8 +16,8 @@ To initialize the library, you can either pass it in a settings object with the 
 ```
 var Clarifai = require('clarifai')
 client = new Clarifai({
-  id: <clarafai id>,
-  secret: <clarafai secret>
+  id: <clarifai id>,
+  secret: <clarifai secret>
 })
 ```
 
@@ -41,15 +41,15 @@ client.getAccessToken(function(err, accessToken) {
 
 ## Tagging
 
-###  Image Tagging via url
+###  Image Tagging via URL
 ```
 client.tagFromUrls('image', url, function(err, results) {
   // Callback code here
 }, [language])
 ```
-This function will take one image url, or many image urls as an array.  The language parameter is optional, and will request tags from clarifai in the appropriate language.
+This function will take one image URL, or many image URLs as an array.  The language parameter is optional, and will request tags from Clarifai in the appropriate language.
 
-The callback returns the standard error / results.  The results object returned has the following structure:
+The callback returns the standard error/results.  The results object returned has the following structure:
 ```
 {
   docId: 15512461224882630000,
@@ -158,17 +158,17 @@ The callback returns the standard error / results.  The results object returned 
   ]
 }
 ```
-If one image was passed in, the results object will be the single object representing the results for that image.  If more than one was passed in, it will be an array of results objects.
+If one image was passed in, the `results` object will be the single object representing the results for that image.  If more than one was passed in, it will be an array of `results` objects.
 
-### Video Tagging via url
+### Video Tagging via URL
 ```
 client.tagFromUrls('video', url, function(err, results) {
   // Callback code here
 }, [language])
 ```
-This function will take one video url, or many video urls as an array.  The language parameter is optional, and will request tags from clarifai in the appropriate language.
+This function will take one video URL, or many video URLs as an array.  The language parameter is optional, and will request tags from Clarifai in the appropriate language.
 
-The callback returns the standard error / results.  The results object returned has the following structure:
+The callback returns the standard error/results.  The `results` object returned has the following structure:
 ```
 {
   "docId": 13756317490038290000,
@@ -241,9 +241,9 @@ The callback returns the standard error / results.  The results object returned 
   ]
 }
 ```
-Each classification is taken at 1 second keyframes by clarifai, so each keyframe has a set of tags associated with it.  So the document results object will have a timestamps array, and each timestamp will have an array of tags associated with that timestamp.
+Each classification is taken at 1 second keyframes by Clarifai, so each keyframe has a set of tags associated with it.  So the document's `results` object will have a timestamps array, and each timestamp will have an array of tags associated with that timestamp.
 
-If one video was passed in, the results object will be the single object representing the results for that image.  If more than one was passed in, it will be an array of results objects.
+If one video was passed in, the `results` object will be the single object representing the results for that image.  If more than one was passed in, it will be an array of `results` objects.
 
 
 ## Feedback
