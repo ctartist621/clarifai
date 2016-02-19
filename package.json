@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "lodash": "4.2.0",
-    "needle": "0.11.0"
+    "needle": "1.0.0"
   },
   "config": {
     "blanket": {
