@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/ctartist621/clarifai#readme",
   "devDependencies": {
-    "chai": "3.4.1",
+    "chai": "3.5.0",
     "codacy-coverage": "1.1.3",
     "istanbul": "0.4.2",
     "mocha": "2.4.1",
