@@ -246,6 +246,18 @@ Each classification is taken at 1 second keyframes by clarifai, so each keyframe
 If one video was passed in, the results object will be the single object representing the results for that image.  If more than one was passed in, it will be an array of results objects.
 
 
+###  Image and Video Tagging from Buffers
+```
+client.tagFromBuffers('image', buffer, function(err, results) {
+  // Callback code here
+}, [language])
+```
+This function will take one Buffer containing image or video data, or many Buffers as an array.  The language parameter is optional, and will request tags from clarifai in the appropriate language.
+
+The response format is the same as for image or video URLs, as described in the previous sections.
+
+
+
 ## Feedback
 For all the feedback functions, any input parameters can be a single string, or an array of strings.
 
