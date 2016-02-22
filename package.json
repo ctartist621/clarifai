@@ -4,7 +4,7 @@
   "description": "A Node integration library for clarifai",
   "main": "index.js",
   "engines": {
-    "node": "5.5.0"
+    "node": "5.6.0"
   },
   "scripts": {
     "test": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage && rm -rf ./coverage",
