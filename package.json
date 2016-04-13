@@ -38,7 +38,7 @@
     "publish": "0.5.0"
   },
   "dependencies": {
-    "lodash": "4.8.1",
+    "lodash": "4.11.0",
     "needle": "1.0.0"
   },
   "config": {
