@@ -9,15 +9,36 @@ var _array = function(str) {
   }
 }
 
-var _encodeTagUrls = function (urls, lang) {
+var _encodeTagUrls = function(urls, opts) {
   var data = ''
 
   for (var url of _array(urls)) {
     data += encodeURI('url=' + url) + '&'
   }
 
-  if (lang) {
-    data += 'language=' + lang
+  if (opts.lang) {
+    data += 'language=' + opts.lang
+  }
+
+  if (opts.model) {
+    switch (opts.model) {
+      case 'general': {
+        data += 'model=' + 'general-v1.3'
+        break
+      }
+      case 'nsfw': {
+        data += 'model=' + 'nsfw-v1.0'
+        break
+      }
+      case 'weddings': {
+        data += 'model=' + 'weddings-v1.0'
+        break
+      }
+      default: {
+        data += 'model=' + 'weddings-v1.0'
+        break
+      }
+    }
   }
 
   return data
@@ -30,7 +51,7 @@ var _partForParameter = function(name, value) {
   return new Buffer(part, 'utf8');
 }
 
-var _buildMultipart = function(buffers, lang) {
+var _buildMultipart = function(buffers, opts) {
   // Build a multipart payload. We can't use needle's support for this because needle expects all
   // parts to have distinct names while Clarifai requires multiple parts to have the same name.
   var chunks = []
@@ -44,9 +65,32 @@ var _buildMultipart = function(buffers, lang) {
     chunks.push(buffer)
   }
 
-  if (lang) {
-    chunks.push(_partForParameter('language', lang))
+  if (opts.lang) {
+    chunks.push(_partForParameter('language', opts.lang))
   }
+
+  if (opts.model) {
+    switch (opts.model) {
+      case 'general': {
+        chunks.push(_partForParameter('model', 'general-v1.3'))
+        break
+      }
+      case 'nsfw': {
+        chunks.push(_partForParameter('model', 'nsfw-v1.0'))
+        break
+      }
+      case 'weddings': {
+        chunks.push(_partForParameter('model', 'weddings-v1.0'))
+        break
+      }
+      default: {
+        chunks.push(_partForParameter('model', 'general-v1.3'))
+        break
+      }
+    }
+  }
+
+
 
   chunks.push(new Buffer('--' + _boundary + '--\r\n', 'ascii'))
 
@@ -54,9 +98,9 @@ var _buildMultipart = function(buffers, lang) {
 }
 
 var _parseErr = function(err, resp, body, cb) {
-  if(err) {
+  if (err) {
     return cb(err)
-  } else if((resp.statusCode !== 200 && resp.statusCode !== 201) || body.status_code === 'PARTIAL_ERROR') {
+  } else if ((resp.statusCode !== 200 && resp.statusCode !== 201) || body.status_code === 'PARTIAL_ERROR') {
     return cb(body)
   } else {
     return cb(err, body)
@@ -64,33 +108,38 @@ var _parseErr = function(err, resp, body, cb) {
 }
 
 var _withAccessToken = function(_this, options) {
-  return _.merge(options, { headers: { 'Authorization': _this.tokenType + ' ' + _this.accessToken }});
+  return _.merge(options, { headers: { Authorization: _this.tokenType + ' ' + _this.accessToken }});
 }
 
 var _request = function(verb, type, data, options, _this, cb) {
   var url = 'https://api.clarifai.com'
 
-  switch(type) {
-    case 'feedback':
+  switch (type) {
+    case 'feedback': {
       url += '/v1/feedback/'
       break
-    case 'info':
+    }
+    case 'info': {
       url += '/v1/info/'
       break
-    case 'tag':
+    }
+    case 'tag': {
       url += '/v1/tag/'
       break
-    case 'token':
+    }
+    case 'token': {
       url += '/v1/token/'
       break
-    default:
+    }
+    default: {
       throw err('Request Type not defined')
+    }
   }
 
   needle.request(verb, url, data, _withAccessToken(_this, options), function(err, resp, body) {
     if (body.status_code === 'TOKEN_INVALID' || body.status_code === 'TOKEN_NONE') {
       _this.getAccessToken(function(err) {
-        if(err) {
+        if (err) {
           return cb(err)
         } else {
           needle.request(verb, url, data, _withAccessToken(_this, options), function(err, resp, body) {
@@ -112,13 +161,13 @@ var formatImageResults = function(body) {
       return {
         class: tag[0],
         conceptId: tag[1],
-        probability: tag[2]
+        probability: tag[2],
       }
     })
     var ret = {
       docId: result.docid,
       docIdStr: result.docid_str,
-      tags: tags
+      tags: tags,
     }
     return ret
   })
@@ -141,15 +190,15 @@ var formatVideoResults = function(body) {
           return {
             class: tsResult[0],
             conceptId: tsResult[1],
-            probability: tsResult[2]
+            probability: tsResult[2],
           }
-        })
+        }),
       }
     })
     var ret = {
       docId: result.docid,
       docIdStr: result.docid_str,
-      timestamps: timestamps
+      timestamps: timestamps,
     }
     return ret
   })
@@ -165,7 +214,7 @@ Clarifai.prototype.getAccessToken = function(cb) {
   var data = {
     grant_type: 'client_credentials',
     client_id: this.id,
-    client_secret: this.secret
+    client_secret: this.secret,
   }
 
   _request('post', 'token', data, null, this, function(err, body) {
@@ -179,40 +228,40 @@ Clarifai.prototype.getAccessToken = function(cb) {
 
 Clarifai.prototype.addTags = function(docIds, tags, cb) {
   var data = ''
-  data +='docids=' + _array(docIds).join(',')
-  data +='&add_tags=' + _array(tags).join(',')
+  data += 'docids=' + _array(docIds).join(',')
+  data += '&add_tags=' + _array(tags).join(',')
 
   _request('post', 'feedback', data, this.options, this, cb)
 }
 
 Clarifai.prototype.removeTags = function(docIds, tags, cb) {
   var data = ''
-  data +='docids=' + _array(docIds).join(',')
-  data +='&remove_tags=' + _array(tags).join(',')
+  data += 'docids=' + _array(docIds).join(',')
+  data += '&remove_tags=' + _array(tags).join(',')
 
   _request('post', 'feedback', data, this.options, this, cb)
 }
 
 Clarifai.prototype.addSimilarDocIds = function(docIds, otherIds, cb) {
   var data = ''
-  data +='docids=' + _array(docIds).join(',')
-  data +='&similar_docids=' + _array(otherIds).join(',')
+  data += 'docids=' + _array(docIds).join(',')
+  data += '&similar_docids=' + _array(otherIds).join(',')
 
   _request('post', 'feedback', data, this.options, this, cb)
 }
 
 Clarifai.prototype.addDissimilarDocIds = function(docIds, otherIds, cb) {
   var data = ''
-  data +='docids=' + _array(docIds).join(',')
-  data +='&dissimilar_docids=' + _array(otherIds).join(',')
+  data += 'docids=' + _array(docIds).join(',')
+  data += '&dissimilar_docids=' + _array(otherIds).join(',')
 
   _request('post', 'feedback', data, this.options, this, cb)
 }
 
 Clarifai.prototype.associateSearchTerms = function(docIds, terms, cb) {
   var data = ''
-  data +='docids=' + _array(docIds).join(',')
-  data +='&search_click=' + _array(terms).join(',')
+  data += 'docids=' + _array(docIds).join(',')
+  data += '&search_click=' + _array(terms).join(',')
 
   _request('post', 'feedback', data, this.options, this, cb)
 }
@@ -223,22 +272,22 @@ Clarifai.prototype.getAPIDetails = function(cb) {
   })
 }
 
-Clarifai.prototype.tagFromUrls = function(type, urls, cb, lang) {
-  var data = _encodeTagUrls(urls, lang)
+Clarifai.prototype.tagFromUrls = function(type, urls, cb, opts) {
+  var data = _encodeTagUrls(urls, opts)
 
   _request('post', 'tag', data, this.options, this, function(err, body) {
-    if(err) {
+    if (err) {
       return cb(err)
     } else if (type === 'image') {
       return cb(err, formatImageResults(body))
-    } else{
+    } else {
       return cb(err, formatVideoResults(body))
     }
   })
 }
 
-Clarifai.prototype.tagFromBuffers = function(type, buffers, cb, lang) {
-  var data = _buildMultipart(buffers, lang)
+Clarifai.prototype.tagFromBuffers = function(type, buffers, cb, opts) {
+  var data = _buildMultipart(buffers, opts)
 
   var options = _.cloneDeep(this.options || {})
   options.headers = options.headers || {}
@@ -256,15 +305,15 @@ Clarifai.prototype.tagFromBuffers = function(type, buffers, cb, lang) {
   })
 }
 
-function Clarifai (opts) {
+function Clarifai(opts) {
   opts = opts || {
     id: process.env.CLARIFAI_ID,
-    secret: process.env.CLARIFAI_SECRET
+    secret: process.env.CLARIFAI_SECRET,
   }
 
   this.id = opts.id
   this.secret = opts.secret
-  this.options = {}
+  this.options = this.options || {}
 }
 
 module.exports = Clarifai

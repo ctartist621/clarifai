@@ -1,8 +1,14 @@
-var fs = require('fs'),
-    path = require('path'),
-    should = require('chai').should(),
-    Clarifai = require('../index'),
-    client
+var nock = require('nock');
+nock.recorder.rec({
+  dont_print: true,
+  enable_reqheaders_recording: true,
+});
+
+var fs = require('fs');
+var path = require('path');
+var should = require('chai').should();
+var Clarifai = require('../index');
+var client;
 
 if (process.env.CIRCLECI) {
   client = new Clarifai()
@@ -10,7 +16,20 @@ if (process.env.CIRCLECI) {
   client = new Clarifai(require('../testCreds.json'))
 }
 
+var nockBack = require('nock').back;
+
+nockBack.fixtures = __dirname + '/nockFixtures/fixtures.js';
+nockBack.setMode('record');
+
+var hookAfter = function() {
+  // console.log('HOOKS - AFTER')
+  // console.log(__dirname + '/nockFixtures/fixtures.js')
+  // fs.appendFileSync(__dirname + '/nockFixtures/fixtures.js', nock.recorder.play());
+}
+
 describe('#Authentication', function() {
+  after(hookAfter);
+
   it('should authenticate and save an access token', function(done) {
     client.getAccessToken(function(err, resp) {
       should.not.exist(err)
@@ -35,7 +54,9 @@ describe('#Authentication', function() {
 })
 
 describe('#Tagging', function() {
+  after(hookAfter);
   describe('#Images', function() {
+    after(hookAfter);
     it('should tag an image from a url', function(done) {
       var url = 'http://www.clarifai.com/img/metro-north.jpg'
       client.tagFromUrls('image', url, function(err, resp) {
@@ -61,7 +82,7 @@ describe('#Tagging', function() {
         resp.tags[0].should.have.property('conceptId')
         resp.tags[0].should.have.property('probability')
         done()
-      }, 'es')
+      }, { lang: 'es' })
     });
 
     it('should tag multiple images from a set of urls', function(done) {
@@ -85,6 +106,7 @@ describe('#Tagging', function() {
   });
 
   describe('#Videos', function() {
+    after(hookAfter);
     it('should tag a video from a url', function(done) {
       this.timeout(20000);
       var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
@@ -116,7 +138,58 @@ describe('#Tagging', function() {
         resp.timestamps[0].tags[0].should.have.property('conceptId')
         resp.timestamps[0].tags[0].should.have.property('probability')
         done()
-      }, 'es')
+      }, { lang: 'es' })
+    });
+
+    it('should tag an video from a url in another the \'General\' model', function(done) {
+      var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
+      this.timeout(20000);
+      client.tagFromUrls('video', url, function(err, resp) {
+        should.not.exist(err)
+        resp.should.have.property('docId')
+        resp.should.have.property('docIdStr')
+        resp.should.have.property('timestamps').with.length.above(0)
+        resp.timestamps[0].should.have.property('timestamp')
+        resp.timestamps[0].should.have.property('tags').with.length.above(0)
+        resp.timestamps[0].tags[0].should.have.property('class')
+        resp.timestamps[0].tags[0].should.have.property('conceptId')
+        resp.timestamps[0].tags[0].should.have.property('probability')
+        done()
+      }, { model: 'general' })
+    });
+
+    it('should tag an video from a url in another the \'NSFW\' model', function(done) {
+      var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
+      this.timeout(20000);
+      client.tagFromUrls('video', url, function(err, resp) {
+        should.not.exist(err)
+        resp.should.have.property('docId')
+        resp.should.have.property('docIdStr')
+        resp.should.have.property('timestamps').with.length.above(0)
+        resp.timestamps[0].should.have.property('timestamp')
+        resp.timestamps[0].should.have.property('tags').with.length.above(0)
+        resp.timestamps[0].tags[0].should.have.property('class')
+        resp.timestamps[0].tags[0].should.have.property('conceptId')
+        resp.timestamps[0].tags[0].should.have.property('probability')
+        done()
+      }, { model: 'nsfw' })
+    });
+
+    it('should tag an video from a url in another the \'weddings\' model', function(done) {
+      var url = 'http://html5videoformatconverter.com/data/images/happyfit2.mp4'
+      this.timeout(20000);
+      client.tagFromUrls('video', url, function(err, resp) {
+        should.not.exist(err)
+        resp.should.have.property('docId')
+        resp.should.have.property('docIdStr')
+        resp.should.have.property('timestamps').with.length.above(0)
+        resp.timestamps[0].should.have.property('timestamp')
+        resp.timestamps[0].should.have.property('tags').with.length.above(0)
+        resp.timestamps[0].tags[0].should.have.property('class')
+        resp.timestamps[0].tags[0].should.have.property('conceptId')
+        resp.timestamps[0].tags[0].should.have.property('probability')
+        done()
+      }, { model: 'weddings' })
     });
 
     it.skip('should tag multiple videos from a set of urls', function(done) {
@@ -167,13 +240,13 @@ describe('#Tagging', function() {
         resp.tags[0].should.have.property('conceptId')
         resp.tags[0].should.have.property('probability')
         done()
-      }, 'es')
+      }, { lang: 'es' })
     });
 
     it('should tag multiple images from a set of buffers', function(done) {
       var buffers = [
         fs.readFileSync(path.join(__dirname, 'sky.jpg')),
-        fs.readFileSync(path.join(__dirname, 'sky.jpg'))
+        fs.readFileSync(path.join(__dirname, 'sky.jpg')),
       ];
       client.tagFromBuffers('image', buffers, function(err, resp) {
         should.not.exist(err)
@@ -198,6 +271,7 @@ describe('#Tagging', function() {
 });
 
 describe('#Information', function() {
+  after(hookAfter);
   it('should get current API Details', function(done) {
     client.getAPIDetails(function(err, resp) {
       should.not.exist(err)
@@ -219,6 +293,7 @@ describe('#Information', function() {
 });
 
 describe('#Feedback', function() {
+  after(hookAfter);
   it('should add tags or give positive feedback for tags to a docid', function(done) {
     var docIds = ['78c742b9dee940c8cf2a06f860025141']
     var tags = ['car','dashboard','driving']

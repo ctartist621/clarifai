@@ -35,11 +35,13 @@
     "istanbul": "0.4.3",
     "mocha": "2.4.5",
     "mocha-lcov-reporter": "1.2.0",
+    "nock": "8.0.0",
     "publish": "0.6.0"
   },
   "dependencies": {
     "lodash": "4.12.0",
-    "needle": "1.0.0"
+    "needle": "1.0.0",
+    "request": "2.72.0"
   },
   "config": {
     "blanket": {
