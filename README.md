@@ -3,6 +3,7 @@
 # clarifai
 A Node integration library for [Clarifai](http://clarifai.com/), a very cool content tagging api.
 
+This repository is now DEPRECATED.  It has been replaced with the official client, found [here](https://github.com/Clarifai/clarifai-javascript). 
 
 ## Installation
 
